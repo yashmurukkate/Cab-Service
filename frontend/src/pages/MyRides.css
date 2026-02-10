@@ -1,0 +1,251 @@
+.my-rides {
+    padding: 40px 0;
+    min-height: calc(100vh - 80px);
+}
+
+.my-rides.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.my-rides h1 {
+    font-size: 32px;
+    margin-bottom: 32px;
+}
+
+.no-rides {
+    text-align: center;
+    padding: 60px 40px;
+    border-radius: var(--radius-xl);
+}
+
+.empty-icon {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.no-rides h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.no-rides p {
+    color: var(--text-secondary);
+}
+
+.rides-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ride-card {
+    padding: 24px;
+}
+
+.ride-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.ride-date {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.pending {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent);
+}
+
+.status-badge.active {
+    background: rgba(14, 165, 233, 0.15);
+    color: var(--secondary);
+}
+
+.status-badge.success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
+}
+
+.status-badge.cancelled {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+}
+
+.ride-route {
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 40px;
+}
+
+.route-point {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.route-icon {
+    position: absolute;
+    left: 0;
+    font-size: 18px;
+}
+
+.route-address {
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.route-line {
+    position: absolute;
+    left: 8px;
+    top: 28px;
+    width: 2px;
+    height: 20px;
+    background: var(--text-muted);
+}
+
+.ride-details {
+    display: flex;
+    gap: 32px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 16px;
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.detail-value {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.detail-value.fare {
+    color: var(--success);
+}
+
+.driver-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+}
+
+.driver-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.driver-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.driver-name {
+    font-weight: 500;
+}
+
+.driver-vehicle {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.driver-rating {
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.ride-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.rating-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: auto;
+}
+
+.rating-section span {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.rating-stars {
+    display: flex;
+    gap: 4px;
+}
+
+.star-btn {
+    background: none;
+    font-size: 20px;
+    padding: 4px;
+    transition: transform var(--transition-fast);
+}
+
+.star-btn:hover {
+    transform: scale(1.2);
+}
+
+.your-rating {
+    font-size: 14px;
+    color: var(--accent);
+    margin-right: auto;
+}
+
+.load-more {
+    display: block;
+    margin: 32px auto 0;
+}
+
+@media (max-width: 768px) {
+    .ride-details {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .ride-actions {
+        flex-direction: column;
+    }
+
+    .rating-section {
+        margin-right: 0;
+        margin-bottom: 12px;
+    }
+}

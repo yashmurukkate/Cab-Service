@@ -1,0 +1,382 @@
+{
+    "info": {
+        "name": "CabService API Collection",
+        "description": "Complete API collection for CabService microservices",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:8080/api"
+        },
+        {
+            "key": "accessToken",
+            "value": ""
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{accessToken}}"
+            }
+        ]
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register User",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/users/auth/register",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"+919876543210\",\n  \"password\": \"password123\",\n  \"userType\": \"CUSTOMER\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/users/auth/login",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var response = pm.response.json();",
+                                    "pm.collectionVariables.set('accessToken', response.accessToken);"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Refresh Token",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/users/auth/refresh",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"refreshToken\": \"your-refresh-token\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "User Management",
+            "item": [
+                {
+                    "name": "Get Profile",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/users/profile"
+                    }
+                },
+                {
+                    "name": "Update Profile",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{baseUrl}}/users/profile",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"phone\": \"+919876543210\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Add Payment Method",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/users/payment-methods",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"type\": \"CARD\",\n  \"cardNumber\": \"4111111111111111\",\n  \"expiryMonth\": 12,\n  \"expiryYear\": 2025,\n  \"cardHolderName\": \"John Doe\",\n  \"isDefault\": true\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Cab Management",
+            "item": [
+                {
+                    "name": "Register Driver",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/cabs/drivers",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": 1,\n  \"licenseNumber\": \"DL123456789\",\n  \"vehicle\": {\n    \"make\": \"Toyota\",\n    \"model\": \"Innova\",\n    \"year\": 2022,\n    \"licensePlate\": \"MH01AB1234\",\n    \"color\": \"White\",\n    \"vehicleType\": \"SUV\"\n  }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Nearby Cabs",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/cabs/nearby?latitude=19.0760&longitude=72.8777&radiusKm=5"
+                    }
+                },
+                {
+                    "name": "Update Location",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{baseUrl}}/cabs/drivers/1/location",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"latitude\": 19.0760,\n  \"longitude\": 72.8777\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Update Driver Status",
+                    "request": {
+                        "method": "PUT",
+                        "url": "{{baseUrl}}/cabs/drivers/1/status",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"AVAILABLE\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Ride Management",
+            "item": [
+                {
+                    "name": "Book Ride",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/rides",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"pickupLatitude\": 19.0760,\n  \"pickupLongitude\": 72.8777,\n  \"dropoffLatitude\": 19.1136,\n  \"dropoffLongitude\": 72.8697,\n  \"pickupAddress\": \"Gateway of India\",\n  \"dropoffAddress\": \"Bandra Station\",\n  \"vehicleType\": \"SEDAN\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Ride by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/rides/1"
+                    }
+                },
+                {
+                    "name": "Get My Rides",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/rides?page=0&size=10"
+                    }
+                },
+                {
+                    "name": "Accept Ride (Driver)",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/rides/1/accept"
+                    }
+                },
+                {
+                    "name": "Cancel Ride",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/rides/1/cancel"
+                    }
+                },
+                {
+                    "name": "Rate Ride",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/rides/1/rate",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Great ride!\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Billing",
+            "item": [
+                {
+                    "name": "Calculate Fare",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/billing/calculate-fare",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"pickupLatitude\": 19.0760,\n  \"pickupLongitude\": 72.8777,\n  \"dropoffLatitude\": 19.1136,\n  \"dropoffLongitude\": 72.8697,\n  \"vehicleType\": \"SEDAN\",\n  \"promoCode\": \"\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get Invoice by Ride",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/billing/invoices/ride/1"
+                    }
+                },
+                {
+                    "name": "Process Payment",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/billing/payments",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"invoiceId\": 1,\n  \"paymentMethod\": \"CARD\",\n  \"paymentMethodDetails\": \"**** **** **** 1111\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Routing",
+            "item": [
+                {
+                    "name": "Calculate Distance",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/routing/distance?startLat=19.0760&startLon=72.8777&endLat=19.1136&endLon=72.8697"
+                    }
+                },
+                {
+                    "name": "Estimate ETA",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/routing/eta?startLat=19.0760&startLon=72.8777&endLat=19.1136&endLon=72.8697&vehicleType=SEDAN"
+                    }
+                },
+                {
+                    "name": "Get Route",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/routing/route",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"startLatitude\": 19.0760,\n  \"startLongitude\": 72.8777,\n  \"endLatitude\": 19.1136,\n  \"endLongitude\": 72.8697,\n  \"vehicleType\": \"SEDAN\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Notifications",
+            "item": [
+                {
+                    "name": "Send Notification",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{baseUrl}}/notifications/send",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": 1,\n  \"type\": \"PROMOTIONAL\",\n  \"channel\": \"EMAIL\",\n  \"recipient\": \"john@example.com\",\n  \"subject\": \"Welcome to CabService!\",\n  \"content\": \"Thank you for signing up!\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get User Notifications",
+                    "request": {
+                        "method": "GET",
+                        "url": "{{baseUrl}}/notifications/user/1?page=0&size=20"
+                    }
+                }
+            ]
+        }
+    ]
+}

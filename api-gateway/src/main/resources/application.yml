@@ -1,0 +1,122 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # User Service Routes
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - AuthenticationFilter
+
+        # Cab Service Routes  
+        - id: cab-service
+          uri: lb://CAB-SERVICE
+          predicates:
+            - Path=/api/cabs/**
+          filters:
+            - AuthenticationFilter
+
+        # Ride Service Routes
+        - id: ride-service
+          uri: lb://RIDE-SERVICE
+          predicates:
+            - Path=/api/rides/**
+          filters:
+            - AuthenticationFilter
+
+        # Billing Service Routes
+        - id: billing-service
+          uri: lb://BILLING-SERVICE
+          predicates:
+            - Path=/api/billing/**
+          filters:
+            - AuthenticationFilter
+
+        # Notification Service Routes
+        - id: notification-service
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/api/notifications/**
+          filters:
+            - AuthenticationFilter
+
+        # Routing Service Routes
+        - id: routing-service
+          uri: lb://ROUTING-SERVICE
+          predicates:
+            - Path=/api/routing/**
+          filters:
+            - AuthenticationFilter
+
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 100
+            redis-rate-limiter.burstCapacity: 100
+            redis-rate-limiter.requestedTokens: 1
+        - name: CircuitBreaker
+          args:
+            name: defaultCircuitBreaker
+            fallbackUri: forward:/fallback
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+jwt:
+  secret: ${JWT_SECRET:Y2FiLXNlcnZpY2Utc2VjcmV0LWtleS1mb3Itand0LXRva2VuLWdlbmVyYXRpb24tYW5kLXZhbGlkYXRpb24tMjAyNA==}
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        permittedNumberOfCallsInHalfOpenState: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+    instances:
+      defaultCircuitBreaker:
+        baseConfig: default
+
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,gateway
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.cabservice.gateway: DEBUG
